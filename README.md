@@ -13,7 +13,6 @@ This repository contains a Node.js bot application Dockerized alongside a Postgr
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/jmakalanda/CurrencyWaveAlertBot.git
-cd your-repo
 ```
 ### 2. Configure Environment Variables
 Create/modify the `.env` file in the root of the project with the following content (This file will be utilised by both the Bot Node.js application and the docker-compose.yml):
@@ -34,19 +33,32 @@ DB_HOST=servicename # Remember to use the service name, the container name or th
 DB_PORT=5432
 DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DATABASE} # postgres://dbuser:thedbuserpassword@servicename:5432/botdatabase 
 ```
-### 3. Initialize Docker Compose
+### 3. Test code in local
+01. Make sure you have the dependent modules installed
+   ```bash
+   npm install --production axios dotenv node-schedule pg
+   ```
+2. Change the following value in the .env file.
+   ```env
+   NODE_ENV=production # can be 'test' or 'production'
+   ```
+4. execute the bot.test.js file via the following command
+   ```bash
+   npm run test
+   ```
+### 4. Initialize Docker Compose
 Ensure that the `Dockerfile.bot` and `init.sql` files are in place:
 - **Dockerfile.bot**: Defines the build and run configuration for the Node.js bot.
 - **init.sql**: SQL script for initializing the PostgreSQL database schema.
 
-### 4. Build and Start the Containers
+### 5. Build and Start the Containers
 ```bash
 docker-compose up --build
 ```
 This command will:
 - Build the Docker images for the bot and PostgreSQL services.
 - Start the containers and set up networking between the bot and PostgreSQL services.
-### 5. Verify the Services
+### 6. Verify the Services
 - **Bot**: The bot will run in the background, fetching and monitoring currency prices.
 - **PostgreSQL**: Accessible on port `5432` on your host machine.
 ## Stopping and Removing Containers
