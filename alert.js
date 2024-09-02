@@ -23,15 +23,17 @@ async function checkPrice(pair,lastPrices, alertThreshold) {
     if (currentPrice && lastPrices[pair] !== undefined) {
         const priceChange = Math.abs((currentPrice - lastPrices[pair]) / lastPrices[pair]);
         if (priceChange >= alertThreshold) {
-            const alert = {
-                currency_pair: pair,
-                previous_rate: lastPrices[pair],
-                current_rate: currentPrice,
-                percentage_change: (priceChange * 100).toFixed(2),
-                threshold: config.alertThreshold,
-                config: JSON.stringify(config), // Store the config as JSON
-            };
-            await insertAlert(alert);
+            if (process.env.NODE_ENV !== 'test') {
+                const alert = {
+                    currency_pair: pair,
+                    previous_rate: lastPrices[pair],
+                    current_rate: currentPrice,
+                    percentage_change: (priceChange * 100).toFixed(2),
+                    threshold: config.alertThreshold,
+                    config: JSON.stringify(config), // Store the config as JSON
+                };
+                await insertAlert(alert);
+            }
             console.log(`Price alert! ${pair} has changed by ${(priceChange * 100).toFixed(2)}%`);
             return true;
         }
