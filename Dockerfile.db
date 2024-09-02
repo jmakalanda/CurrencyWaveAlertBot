@@ -1,0 +1,11 @@
+# Use the official PostgreSQL image from the Docker Hub
+FROM postgres:latest
+
+# Set environment variables
+ENV POSTGRES_DB=botdb
+ENV POSTGRES_USER=botuser
+ENV POSTGRES_PASSWORD=password
+EXPOSE 5432
+
+# Copy the SQL script to the Docker image
+COPY init.sql /docker-entrypoint-initdb.d/
